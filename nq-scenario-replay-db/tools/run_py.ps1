@@ -5,6 +5,10 @@ param(
 
 $ErrorActionPreference = "Stop"
 
+[Console]::InputEncoding = [System.Text.UTF8Encoding]::new()
+[Console]::OutputEncoding = [System.Text.UTF8Encoding]::new()
+$OutputEncoding = [System.Text.UTF8Encoding]::new()
+
 function Test-PythonExe($Path) {
     if ([string]::IsNullOrWhiteSpace($Path)) { return $false }
     try {
@@ -16,7 +20,18 @@ function Test-PythonExe($Path) {
 
 function Invoke-Python($FilePath, $Arguments) {
     # & 연산자로 직접 실행 — PowerShell 유니코드 컨텍스트를 그대로 유지해 한글 인수 보존
-    & $FilePath @Arguments
+    $env:PYTHONIOENCODING = "utf-8"
+    if ($Arguments.Count -ge 2 -and $Arguments[0] -eq "-c") {
+        # -c "code" 형태 지원: run_py.ps1 -c "print('hello')"
+        $code = $Arguments[1]
+        $remaining = @()
+        if ($Arguments.Count -gt 2) {
+            $remaining = $Arguments[2..($Arguments.Count - 1)]
+        }
+        & $FilePath -c $code @remaining
+    } else {
+        & $FilePath @Arguments
+    }
     exit $LASTEXITCODE
 }
 

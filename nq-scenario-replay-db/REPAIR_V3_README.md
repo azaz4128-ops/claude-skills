@@ -8,10 +8,10 @@
 
 ## Apply
 
-Copy/merge this folder over `C:\nq-scenario-replay-db`, then run:
+Copy/merge this folder over `C:\claude-skills\nq-scenario-replay-db`, then run:
 
 ```powershell
-cd C:\nq-scenario-replay-db
+cd C:\claude-skills\nq-scenario-replay-db
 powershell -ExecutionPolicy Bypass -File .\install.ps1
 ```
 

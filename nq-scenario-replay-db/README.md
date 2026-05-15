@@ -42,11 +42,17 @@ python3 scripts/summarize_patterns.py
 ### Windows PowerShell
 
 ```powershell
-cd nq-scenario-replay-db
+cd C:\claude-skills\nq-scenario-replay-db
 powershell -ExecutionPolicy Bypass -File .\install.ps1
 powershell -ExecutionPolicy Bypass -File .\tools\run_py.ps1 scripts\add_case.py --title "정규장 오픈 하단 이탈 실패 후 숏커버 롱" --date 2026-05-14 --tags "정규장오픈,하단이탈실패,숏커버,CVD급반전,박스복귀"
 powershell -ExecutionPolicy Bypass -File .\tools\run_py.ps1 scripts\search_similar_cases.py --query "정규장오픈 하단이탈실패 CVD급반전"
 powershell -ExecutionPolicy Bypass -File .\tools\run_py.ps1 scripts\summarize_patterns.py
+```
+
+PowerShell에서 `Get-Content`로 한글이 깨져 보이면 파일이 깨진 것이 아니라 콘솔 인코딩 문제일 수 있습니다. 확인은 아래처럼 Python 래퍼의 `-c` 옵션으로 읽으면 안전합니다.
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\tools\run_py.ps1 -c "from pathlib import Path; print(Path('README.md').read_text(encoding='utf-8'))"
 ```
 
 ## Codex 앱에서 쓰는 방법

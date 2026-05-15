@@ -23,11 +23,49 @@
 - 결과를 과장하지 않는다. 예상이 틀린 부분과 전환이 늦었던 부분도 기록한다.
 - 실전 교훈은 다음에 바로 적용 가능한 규칙으로 작성한다.
 
+## 차트 분석 답변 고정 형식
+사용자가 차트 이미지를 첨부하고 "차트 분석"을 요청하면 아래 형식으로 답한다.
+
+### 1. 결론
+- 현재 방향을 먼저 말한다.
+- 바로 진입 가능 여부를 명확히 말한다.
+- 핵심 전략을 한 줄로 정리한다.
+- v4 기준상 1시간이 방향, 15분이 자리, 5분이 트리거를 정한다는 원칙을 반영한다.
+
+### 2. 1시간 방향
+- 상위 프레임 방향을 설명한다.
+- 더블비, RSI, 과열/평균회귀, 주요 지지/저항을 보조 판단으로 정리한다.
+- 핵심 가격 구간은 표로 정리한다.
+
+### 3. 15분 구조
+- 현재 가격이 어느 실행 구간에 있는지 설명한다.
+- VAH/VAL/POC, 박스, FVG, 지지/저항을 기준으로 유지 조건과 깨지는 조건을 나눈다.
+
+### 4. 5분 트리거
+- 현재 트리거가 완성됐는지 여부를 먼저 말한다.
+- 박스권, 돌파, 이탈, 재지지, 재저항, 쌍바닥/쌍봉 여부를 본다.
+- RSI, 거래량, CVD는 단독 진입 신호가 아니라 5분 트리거 승인 필터로만 사용한다.
+
+### 5. 매매 시나리오
+- 시나리오 1은 메인 방향으로 작성한다.
+- 시나리오 2는 보조 또는 역추세 단타로 작성한다.
+- 시나리오 3은 실패/전환 시나리오로 작성한다.
+- 각 시나리오에는 `진입 구간`, `트리거`, `손절`, `1차 목표`, `2차 목표`, `등급`을 포함한다.
+
+### 6. 최종 판단
+- 현재 할 행동을 `관망`, `눌림 대기`, `돌파 후 눌림 확인`, `이탈 후 재저항 확인`처럼 실행 가능한 말로 정리한다.
+- "방향은 롱 우세지만 지금 롱은 아님", "추격 금지", "5분 종가 확인 전에는 트리거 미완성"처럼 실전 판단 중심으로 쓴다.
+
 ## 자주 쓰는 명령
-```bash
-python3 scripts/add_case.py --title "케이스 제목" --date YYYY-MM-DD --session "RTH Open" --tags "태그1,태그2,태그3"
-python3 scripts/search_similar_cases.py --query "정규장오픈 하단이탈실패 CVD급반전"
-python3 scripts/summarize_patterns.py
+```powershell
+# 새 복기 케이스 추가
+powershell -ExecutionPolicy Bypass -File .\tools\run_py.ps1 scripts\add_case.py --title "케이스 제목" --date YYYY-MM-DD --session "RTH Open" --tags "태그1,태그2,태그3"
+
+# 유사 케이스 검색
+powershell -ExecutionPolicy Bypass -File .\tools\run_py.ps1 scripts\search_similar_cases.py --query "정규장오픈 하단이탈실패 CVD급반전"
+
+# 패턴 통계 요약
+powershell -ExecutionPolicy Bypass -File .\tools\run_py.ps1 scripts\summarize_patterns.py
 ```
 
 ## 첫 번째 할 일

@@ -13,14 +13,12 @@
 
 ## 적용 방법
 
-기존 `C:
-q-scenario-replay-db`에 이 패치팩 내용을 병합/덮어쓰기 하세요.
+기존 프로젝트 폴더에 이 패치팩 내용을 병합/덮어쓰기 하세요.
 
 그 다음 PowerShell에서:
 
 ```powershell
-cd C:
-q-scenario-replay-db
+cd C:\claude-skills\nq-scenario-replay-db
 powershell -ExecutionPolicy Bypass -File .\install.ps1
 ```
 
@@ -29,19 +27,18 @@ powershell -ExecutionPolicy Bypass -File .\install.ps1
 Codex 앱 내부 Python 경로를 알고 있다면:
 
 ```powershell
-$env:CODEX_PYTHON="C:ull\path	o\python.exe"
+$env:CODEX_PYTHON="C:\full\path\to\python.exe"
 powershell -ExecutionPolicy Bypass -File .\install.ps1
 ```
 
 경로를 영구 저장하려면:
 
 ```powershell
-[Environment]::SetEnvironmentVariable("CODEX_PYTHON", "C:ull\path	o\python.exe", "User")
+[Environment]::SetEnvironmentVariable("CODEX_PYTHON", "C:\full\path\to\python.exe", "User")
 ```
 
 ## 검색 테스트
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File .	ools
-un_py.ps1 scripts\search_similar_cases.py --query "정규장오픈 하단이탈실패 CVD급반전"
+powershell -ExecutionPolicy Bypass -File .\tools\run_py.ps1 scripts\search_similar_cases.py --query "정규장오픈 하단이탈실패 CVD급반전"
 ```

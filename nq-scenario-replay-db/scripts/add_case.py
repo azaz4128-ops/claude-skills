@@ -11,11 +11,23 @@ ROOT = Path(__file__).resolve().parents[1]
 CASES = ROOT / "data" / "cases"
 INDEX = ROOT / "data" / "pattern_index.csv"
 TEMPLATE = ROOT / "templates" / "case_template.md"
+INDEX_FIELDS = ["case_id", "date", "title", "session", "main_pattern", "result", "tags", "case_file"]
 
 
 def slugify(text: str) -> str:
     text = re.sub(r"[^0-9A-Za-z가-힣]+", "_", text.strip()).strip("_")
     return text[:60] or "case"
+
+
+def parse_tags(text: str) -> list[str]:
+    tags = []
+    seen = set()
+    for tag in re.split(r"[,，|/]+", text):
+        tag = tag.strip()
+        if tag and tag not in seen:
+            tags.append(tag)
+            seen.add(tag)
+    return tags
 
 
 def ensure_index() -> None:
@@ -34,7 +46,7 @@ def case_exists(case_id: str) -> bool:
 def append_index(row: dict[str, str]) -> None:
     ensure_index()
     with INDEX.open("a", encoding="utf-8", newline="") as f:
-        writer = csv.DictWriter(f, fieldnames=["case_id", "date", "title", "session", "main_pattern", "result", "tags", "case_file"])
+        writer = csv.DictWriter(f, fieldnames=INDEX_FIELDS)
         writer.writerow(row)
 
 
@@ -46,14 +58,14 @@ def main() -> None:
     parser.add_argument("--main-pattern", default="")
     parser.add_argument("--result", default="")
     parser.add_argument("--tags", default="")
-    parser.add_argument("--no-open", action="store_true", help="생성 경로만 출력")
+    parser.add_argument("--no-open", action="store_true", help="호환용 옵션입니다. 현재는 항상 생성 경로만 출력합니다.")
     args = parser.parse_args()
 
     CASES.mkdir(parents=True, exist_ok=True)
     case_id = f"{args.date}_{slugify(args.title)}"
     file_path = CASES / f"{case_id}.md"
 
-    tags = [t.strip() for t in re.split(r"[,，]", args.tags) if t.strip()]
+    tags = parse_tags(args.tags)
     tags_list = "\n".join(f"- {tag}" for tag in tags) or "-"
 
     if not file_path.exists():

@@ -1,6 +1,12 @@
 # 실전 워크플로우
 
-모든 명령은 `C:\nq-scenario-replay-db` 폴더에서 실행합니다.
+모든 명령은 프로젝트 루트 폴더에서 실행합니다.
+
+현재 작업 폴더 예시:
+
+```powershell
+cd C:\claude-skills\nq-scenario-replay-db
+```
 
 ---
 

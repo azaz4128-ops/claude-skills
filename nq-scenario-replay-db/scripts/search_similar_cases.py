@@ -29,18 +29,26 @@ def main() -> None:
     args = parser.parse_args()
 
     q_tokens = tokenize(args.query)
+    if not q_tokens:
+        print("검색어를 입력하세요.")
+        return
+
     results = []
 
-    if INDEX.exists():
-        with INDEX.open("r", encoding="utf-8-sig", newline="") as f:
-            for row in csv.DictReader(f):
-                case_file = ROOT / row.get("case_file", "")
-                body = case_file.read_text(encoding="utf-8", errors="ignore") if case_file.exists() else ""
-                haystack = " ".join([row.get("title", ""), row.get("tags", ""), row.get("main_pattern", ""), body])
-                h_tokens = tokenize(haystack)
-                score = score_match(q_tokens, haystack.lower(), h_tokens)
-                if score:
-                    results.append((score, row, case_file))
+    if not INDEX.exists():
+        print("data/pattern_index.csv 없음")
+        return
+
+    with INDEX.open("r", encoding="utf-8-sig", newline="") as f:
+        for row in csv.DictReader(f):
+            case_file_value = row.get("case_file", "")
+            case_file = ROOT / case_file_value if case_file_value else Path()
+            body = case_file.read_text(encoding="utf-8-sig", errors="ignore") if case_file.is_file() else ""
+            haystack = " ".join([row.get("title", ""), row.get("tags", ""), row.get("main_pattern", ""), body])
+            h_tokens = tokenize(haystack)
+            score = score_match(q_tokens, haystack.lower(), h_tokens)
+            if score:
+                results.append((score, row, case_file))
 
     results.sort(key=lambda x: x[0], reverse=True)
 
